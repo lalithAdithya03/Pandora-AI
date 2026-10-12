@@ -19,6 +19,7 @@ export default function ResourceView() {
   const locParam = params.get('loc');
   const { profile } = useAuth();
   const [fileError, setFileError] = useState<string | null>(null);
+  const [fileLink, setFileLink] = useState<string | null>(null);
 
   const { data, error, loading, reload } = useAsync(async () => {
     const resource = must(await supabase.from('resources').select('*').eq('id', id!).maybeSingle()) as Resource | null;
@@ -46,15 +47,18 @@ export default function ResourceView() {
   const { resource, chunks, course } = data;
 
   // Opens the stored file through a short-lived signed URL, jumping to the cited page / timestamp when possible.
+  // The tab is opened before the URL is fetched: browsers block window.open once the click has been awaited.
   const openFile = async (chunk?: ResourceChunk) => {
     setFileError(null);
+    setFileLink(null);
     if (!resource.storage_path) return;
+    const tab = window.open('', '_blank');
     const { data: signed, error: e } = await supabase.storage.from(MATERIALS_BUCKET).createSignedUrl(resource.storage_path, 300);
-    if (e || !signed) { setFileError(e?.message ?? 'Could not open the file.'); return; }
+    if (e || !signed) { tab?.close(); setFileError(e?.message ?? 'Could not open the file.'); return; }
     let url = signed.signedUrl;
     if (chunk?.page_number && /pdf/i.test(resource.mime_type ?? resource.storage_path)) url += `#page=${chunk.page_number}`;
     if (chunk?.seconds != null && /video|audio/i.test(resource.mime_type ?? '')) url += `#t=${chunk.seconds}`;
-    window.open(url, '_blank', 'noopener');
+    if (tab) { tab.opener = null; tab.location.href = url; } else setFileLink(url);
   };
   const externalAt = (chunk?: ResourceChunk) => {
     if (!resource.external_url) return null;
@@ -84,6 +88,7 @@ export default function ResourceView() {
           {profile?.role === 'student' && <Link className="btn-secondary" to={`/student/tutor?course=${resource.course_id}&resource=${resource.id}`}><Bot className="h-4 w-4" /> Ask the tutor about this</Link>}
         </div>
         {fileError && <p className="mt-2 text-sm text-danger">{fileError}</p>}
+        {fileLink && <p className="mt-2 text-sm">Your browser blocked the new tab. <a className="link" href={fileLink} target="_blank" rel="noopener noreferrer">Open the file</a></p>}
       </div>
 
       <section>

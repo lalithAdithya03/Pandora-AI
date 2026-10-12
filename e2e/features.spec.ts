@@ -117,6 +117,13 @@ test.describe('learning features', () => {
     await expect(page.getByText(/searchable sections/)).toBeVisible({ timeout: 20_000 });
     expect(sql(`select count(*) from storage.objects o join resources r on r.storage_path = o.name where r.title = '${title}'`)).toBe('1');
 
+    // The stored file opens in a new tab through a signed URL.
+    await page.getByRole('link', { name: title }).click();
+    const fileResponse = page.context().waitForEvent('response', (r) => /\/object\/sign\/.+token=/.test(r.url()));
+    const [tab] = await Promise.all([page.waitForEvent('popup'), page.getByRole('button', { name: /Open file/ }).click()]);
+    expect((await fileResponse).status()).toBe(200);
+    await tab.close();
+
     const student = await browser.newPage();
     await login(student, 'student');
     await student.goto(`/search?q=${word}`);

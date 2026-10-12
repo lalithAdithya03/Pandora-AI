@@ -30,7 +30,7 @@ const readBody = (req) => new Promise((r) => { const c = []; req.on('data', (d) 
 const lit = (s) => `'${String(s).replace(/'/g, "''")}'`;
 
 function sqlAs(claims, sql) {
-  const script = `begin; select set_config('request.jwt.claims', ${lit(JSON.stringify(claims))}, true); set local role ${claims.role === 'authenticated' ? 'authenticated' : 'anon'}; ${sql}; commit;`;
+  const script = `begin; set local request.jwt.claims to ${lit(JSON.stringify(claims))}; set local role ${claims.role === 'authenticated' ? 'authenticated' : 'anon'}; ${sql}; commit;`;
   return execFileSync('psql', [PG, '-X', '-q', '-t', '-A', '-v', 'ON_ERROR_STOP=1', '-c', script], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 }
 
