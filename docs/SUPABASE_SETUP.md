@@ -1,10 +1,10 @@
 # Supabase setup for Macro AI
 
-These steps connect the app to your own Supabase project. Nothing here has been run against a hosted project yet; the same SQL was tested on PostgreSQL 16 with Supabase Auth and PostgREST.
+These steps connect the app to your own Supabase project. The migrations have been applied to a hosted Supabase project and pass the Supabase security advisor apart from the intentional items noted below. The same SQL is tested on PostgreSQL 16 with Supabase Auth and PostgREST.
 
 ## 1. Create the database objects
 
-Apply the five migrations in `supabase/migrations/` in filename order, either with the CLI:
+Apply the six migrations in `supabase/migrations/` in filename order, either with the CLI:
 
 ```bash
 supabase link --project-ref <your-ref>
@@ -20,6 +20,7 @@ or by pasting each file into **SQL Editor** and running it.
 | `…03_rls_policies.sql` | Row Level Security on every table |
 | `…04_functions.sql` | Search, tutor retrieval, adaptive quiz start/submit with server-side grading, course insights |
 | `…05_storage.sql` | Private `course-materials` bucket (50 MB limit) and its access policies |
+| `…06_hardening.sql` | Pins search_path on helper functions and blocks direct calls to the signup triggers |
 
 ## 2. Auth settings
 
@@ -65,3 +66,10 @@ Register `student@macro.test` and `teacher@macro.test` (or edit the two emails a
 - Answer keys live in `question_keys`, which students cannot read; quizzes are graded inside `submit_quiz_attempt`.
 - Search and tutor retrieval run with the caller's permissions, so results respect RLS.
 - `npm run test:db` checks all of the above (60 assertions) on a throwaway database.
+
+## Security advisor notes
+
+After setup, the advisor still lists two kinds of items on purpose:
+
+- **`teacher_directory` is a security definer view.** It exposes only the id, name and institution of teachers so students can see who teaches a course. Profiles are otherwise private, so a security invoker view would return no teachers.
+- **Signed-in users can execute SECURITY DEFINER functions.** These are the app's RPCs (quizzes, invitations, access checks). Each one checks `auth.uid()` and the caller's role itself.
