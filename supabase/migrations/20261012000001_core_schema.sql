@@ -19,6 +19,7 @@ create table public.profiles (
   role public.app_role not null default 'student',
   institution text,
   avatar_url text,
+  preferred_theme text check (preferred_theme is null or preferred_theme ~ '^[a-z-]+:(light|dark)$'),
   study_streak int not null default 0 check (study_streak >= 0),
   last_active_on date,
   created_at timestamptz not null default now(),
