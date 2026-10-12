@@ -84,7 +84,7 @@ Simulated students (starting ability 0.2 / 0.5 / 0.8, 5 sessions × 8 questions)
 
 ## Known limitations
 
-- Input must be pre-converted text with markers (no PDF, PPTX, video or image parsing).
+- PDF and PPTX are converted in the browser (pdf.js and JSZip, loaded from cdnjs, so internet is needed the first time). Output has page/slide markers but all text lands in the `General` topic unless headings are added by hand. No OCR for scanned PDFs, no table/figure understanding, no video/audio transcription (use `.vtt`/`.srt`).
 - Retrieval is lexical only, so no synonyms or semantic matching and English only.
 - Question generation is cloze-style only; there are no conceptual or multi-step questions.
 - Everything lives in one HTML file and one browser's `localStorage`.

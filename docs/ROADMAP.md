@@ -3,7 +3,7 @@
 Ordered by weight in the Track D evaluation criteria and by how much each step unblocks the next.
 
 1. **Multimodal ingestion** (Knowledge Base & Grounding, 20%)
-   - PDF text extraction with page numbers; slide decks (PPTX) with slide numbers.
+   - ~~PDF text extraction with page numbers; slide decks (PPTX) with slide numbers.~~ Done (client-side). Still to do: automatic topic/prerequisite detection for these files, OCR for scanned PDFs.
    - Video: speech-to-text with timestamps (e.g. Whisper) producing the same unit format.
    - Figures and diagrams: extract images and caption them with a vision model, then index the captions with their page/slide.
 2. **Real retrieval and generation**

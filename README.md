@@ -39,8 +39,8 @@ Text without headings goes into a `General` topic.
 | Requirement | Status |
 |---|---|
 | Source-linked knowledge base (topics, prerequisites, page/slide/timestamp) | Done for pre-converted text |
-| Ingest video, PDF, slides **without manual preprocessing** | **Not done**: input must be text with markers |
-| Extract information from images/diagrams | **Partial**: only hand-written `Figure:` captions are indexed |
+| Ingest video, PDF, slides **without manual preprocessing** | **Partial**: `.pdf` (per-page) and `.pptx` (per-slide) upload directly; video still needs a `.vtt`/`.srt` transcript; scanned PDFs (no text layer) are rejected with a warning |
+| Extract information from images/diagrams | **Partial**: PPTX picture alt-text and hand-written `Figure:` captions are indexed; pixels are not analysed |
 | Cited answers that open the exact source | Done (click a 🔗 chip to see the highlighted excerpt) |
 | Decline off-material queries | Done (coverage threshold on key-term overlap) |
 | MCQ / short answer / numerical quizzes with topic, source, difficulty tags | Done; MCQ and short answer are fill-in-the-blank only |
