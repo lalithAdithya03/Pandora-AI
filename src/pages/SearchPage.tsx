@@ -69,7 +69,7 @@ function SearchContent() {
       </p>
       <div className="mt-5"><SearchBar initial={q} size="lg" autoFocus={!q} onSearch={(term) => update({ q: term })} /></div>
 
-      <div className="mt-4 flex flex-wrap gap-2" aria-label="Resource type filters">
+      <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Resource type filters">
         {KIND_FILTERS.map((k) => (
           <button key={k.value} onClick={() => toggleKind(k.value)} aria-pressed={kinds.includes(k.value)}
             className={`chip cursor-pointer transition ${kinds.includes(k.value) ? 'border-accent bg-primary/15 text-text' : 'hover:border-accent/50'}`}>

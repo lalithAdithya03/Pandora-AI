@@ -13,17 +13,23 @@ function message(err: unknown) {
   return 'Unexpected error';
 }
 
-/** Runs an async loader when deps change; ignores stale responses. */
+/**
+ * Runs an async loader when deps change; ignores stale responses.
+ * `reload()` refreshes in the background: current data stays on screen (loading stays false),
+ * so forms and messages below a reloading list are not unmounted.
+ */
 export function useAsync<T>(fn: () => Promise<T>, deps: DependencyList): AsyncState<T> {
   const [data, setDataState] = useState<T>();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [tick, setTick] = useState(0);
   const seq = useRef(0);
+  const background = useRef(false);
 
   useEffect(() => {
     const id = ++seq.current;
-    setLoading(true);
+    if (!background.current) setLoading(true);
+    background.current = false;
     setError(null);
     fn().then(
       (d) => { if (id === seq.current) { setDataState(d); setLoading(false); } },
@@ -32,7 +38,7 @@ export function useAsync<T>(fn: () => Promise<T>, deps: DependencyList): AsyncSt
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps, tick]);
 
-  const reload = useCallback(() => setTick((t) => t + 1), []);
+  const reload = useCallback(() => { background.current = true; setTick((t) => t + 1); }, []);
   const setData = useCallback((u: (prev: T | undefined) => T | undefined) => setDataState(u), []);
   return { data, error, loading, reload, setData };
 }

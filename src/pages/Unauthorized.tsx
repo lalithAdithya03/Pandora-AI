@@ -1,10 +1,11 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ShieldAlert } from 'lucide-react';
 import { useAuth, dashboardFor } from '@/auth/AuthProvider';
 import { PublicLayout } from '@/components/layout/PublicLayout';
 
 export default function Unauthorized() {
-  const { profile } = useAuth();
+  const { profile, signOut } = useAuth();
+  const navigate = useNavigate();
   const state = useLocation().state as { from?: string } | null;
   return (
     <PublicLayout>
@@ -17,9 +18,16 @@ export default function Unauthorized() {
             only available to {state?.from?.startsWith('/student') ? 'students' : state?.from?.startsWith('/admin') ? 'administrators' : 'teachers'}.
             {profile && <> You are signed in as a <strong>{profile.role}</strong>.</>}
           </p>
-          <Link to={profile ? dashboardFor(profile.role) : '/'} className="btn-primary mt-6">
-            {profile ? 'Go to my dashboard' : 'Back to home'}
-          </Link>
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            <Link to={profile ? dashboardFor(profile.role) : '/'} className="btn-primary">
+              {profile ? 'Go to my dashboard' : 'Back to home'}
+            </Link>
+            {profile && (
+              <button className="btn-secondary" onClick={async () => { await signOut(); navigate('/', { replace: true }); }}>
+                Sign out and switch account
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </PublicLayout>
