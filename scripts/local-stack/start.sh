@@ -8,7 +8,7 @@
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
-STATE="${STACK_DIR:-/tmp/vyqora-stack}"
+STATE="${STACK_DIR:-/tmp/macro-stack}"
 PGBIN="${PGBIN:-$(ls -d /usr/lib/postgresql/*/bin 2>/dev/null | sort -V | tail -1)}"
 PGBIN="${PGBIN:-$(dirname "$(command -v initdb)")}"
 : "${GOTRUE_BIN:?set GOTRUE_BIN to the Supabase Auth (GoTrue) binary}"
@@ -39,7 +39,7 @@ GOTRUE_JWT_DEFAULT_GROUP_NAME=authenticated GOTRUE_JWT_ADMIN_ROLES=service_role 
 GOTRUE_SITE_URL=http://localhost:5173 GOTRUE_URI_ALLOW_LIST="http://localhost:5173/**" \
 API_EXTERNAL_URL=http://127.0.0.1:54321/auth/v1 GOTRUE_API_HOST=127.0.0.1 PORT=9999 \
 GOTRUE_MAILER_AUTOCONFIRM=true GOTRUE_EXTERNAL_EMAIL_ENABLED=true GOTRUE_DISABLE_SIGNUP=false \
-GOTRUE_SMTP_HOST=127.0.0.1 GOTRUE_SMTP_PORT=2500 GOTRUE_SMTP_ADMIN_EMAIL=noreply@vyqora.test \
+GOTRUE_SMTP_HOST=127.0.0.1 GOTRUE_SMTP_PORT=2500 GOTRUE_SMTP_ADMIN_EMAIL=noreply@macro.test \
 GOTRUE_RATE_LIMIT_EMAIL_SENT=1000 GOTRUE_LOG_LEVEL=warn \
   nohup "$GOTRUE_BIN" >"$STATE/gotrue.log" 2>&1 & echo $! >"$STATE/gotrue.pid"
 for _ in $(seq 60); do

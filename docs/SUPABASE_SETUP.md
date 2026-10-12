@@ -1,4 +1,4 @@
-# Supabase setup for VYQORA AI
+# Supabase setup for Macro AI
 
 These steps connect the app to your own Supabase project. Nothing here has been run against a hosted project yet; the same SQL was tested on PostgreSQL 16 with Supabase Auth and PostgREST.
 
@@ -25,7 +25,7 @@ or by pasting each file into **SQL Editor** and running it.
 
 In **Authentication → URL Configuration**:
 
-- **Site URL**: your app URL, e.g. `https://vyqora.example.com` (or `http://localhost:5173` for development).
+- **Site URL**: your app URL, e.g. `https://macro.example.com` (or `http://localhost:5173` for development).
 - **Redirect URLs**: add `<site>/reset-password*`, `<site>/student/login*` and `<site>/teacher/login*`.
 
 In **Authentication → Providers → Email**, keep email sign-in on. "Confirm email" can stay on (recommended): the app shows a "check your inbox" screen and a resend button. Set up custom SMTP before launch, because Supabase's built-in mailer is rate-limited.
@@ -56,7 +56,7 @@ supabase functions deploy tutor
 
 ## 6. Demo content (optional)
 
-Register `student@vyqora.test` and `teacher@vyqora.test` (or edit the two emails at the top of the file), then run `supabase/demo/demo_content.sql` in SQL Editor. It creates two published courses, topics, four materials with page/slide/timestamp passages, a teacher quiz and an 18-question practice bank, and enrols the student in one course.
+Register `student@macro.test` and `teacher@macro.test` (or edit the two emails at the top of the file), then run `supabase/demo/demo_content.sql` in SQL Editor. It creates two published courses, topics, four materials with page/slide/timestamp passages, a teacher quiz and an 18-question practice bank, and enrols the student in one course.
 
 ## Security model in short
 

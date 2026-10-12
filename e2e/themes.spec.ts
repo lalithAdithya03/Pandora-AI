@@ -39,7 +39,7 @@ test('dark/light toggle works and a signed-in user keeps their theme on their pr
   await popover.getByRole('radio', { name: /Ocean Breeze/ }).click();
   await popover.getByRole('radio', { name: 'Light', exact: true }).click();
   await expect(page.locator('html')).toHaveAttribute('data-mode', 'light');
-  await expect.poll(() => sql(`select preferred_theme from profiles where email = 'student@vyqora.test'`)).toBe('ocean-breeze:light');
+  await expect.poll(() => sql(`select preferred_theme from profiles where email = 'student@macro.test'`)).toBe('ocean-breeze:light');
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'ocean-breeze');
   await expect(page.locator('html')).toHaveAttribute('data-mode', 'light');

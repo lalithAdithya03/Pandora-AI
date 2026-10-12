@@ -11,7 +11,7 @@ fs.mkdirSync(DIR, { recursive: true });
 net.createServer((sock) => {
   let buf = '', rcpt = [], data = false, body = [];
   const say = (s) => sock.write(s + '\r\n');
-  say('220 vyqora-local ESMTP');
+  say('220 macro-local ESMTP');
   sock.on('data', (chunk) => {
     buf += chunk.toString('utf8');
     let i;
@@ -28,8 +28,8 @@ net.createServer((sock) => {
         continue;
       }
       const cmd = line.slice(0, 4).toUpperCase();
-      if (cmd === 'EHLO') { sock.write('250-vyqora-local\r\n250-AUTH PLAIN LOGIN\r\n250 8BITMIME\r\n'); }
-      else if (cmd === 'HELO') say('250 vyqora-local');
+      if (cmd === 'EHLO') { sock.write('250-macro-local\r\n250-AUTH PLAIN LOGIN\r\n250 8BITMIME\r\n'); }
+      else if (cmd === 'HELO') say('250 macro-local');
       else if (cmd === 'AUTH') say('235 OK');
       else if (cmd === 'MAIL' || cmd === 'RSET' || cmd === 'NOOP') say('250 OK');
       else if (cmd === 'RCPT') { rcpt.push((line.match(/<([^>]+)>/) || [])[1]); say('250 OK'); }

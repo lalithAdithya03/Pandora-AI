@@ -5,16 +5,16 @@ import path from 'node:path';
 
 export const PASSWORD = 'Passw0rd!23';
 export const PG_URL = process.env.E2E_PG_URL ?? 'postgresql://postgres@127.0.0.1:54322/postgres';
-export const MAIL_DIR = process.env.E2E_MAIL_DIR ?? '/tmp/vyqora-stack/mail';
+export const MAIL_DIR = process.env.E2E_MAIL_DIR ?? '/tmp/macro-stack/mail';
 
 /** Runs SQL as the database owner (test setup and assertions only). */
 export function sql(query: string): string {
   return execFileSync('psql', [PG_URL, '-X', '-q', '-t', '-A', '-v', 'ON_ERROR_STOP=1', '-c', query], { encoding: 'utf8' }).trim();
 }
 
-export const unique = (prefix: string) => `${prefix}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}@vyqora.test`;
+export const unique = (prefix: string) => `${prefix}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}@macro.test`;
 
-export async function login(page: Page, role: 'student' | 'teacher', email = `${role}@vyqora.test`, password = PASSWORD) {
+export async function login(page: Page, role: 'student' | 'teacher', email = `${role}@macro.test`, password = PASSWORD) {
   await page.goto(`/${role}/login`);
   await page.getByLabel('Email address').fill(email);
   await page.getByLabel('Password', { exact: true }).fill(password);

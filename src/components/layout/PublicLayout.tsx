@@ -61,12 +61,12 @@ export function Footer() {
           <p className="mb-3 text-sm font-semibold">Support</p>
           <ul className="space-y-2 text-sm text-muted">
             <li><Link className="hover:text-text" to="/forgot-password">Reset your password</Link></li>
-            <li><a className="hover:text-text" href="mailto:support@vyqora.ai">support@vyqora.ai</a></li>
+            <li><a className="hover:text-text" href="mailto:support@macroai.example">support@macroai.example</a></li>
             <li><a className="hover:text-text" href="https://github.com/lalithAdithya03/Pandora-AI" target="_blank" rel="noreferrer">Documentation</a></li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-border py-4 text-center text-xs text-muted">© {year} VYQORA AI · Knowledge Without Boundaries</div>
+      <div className="border-t border-border py-4 text-center text-xs text-muted">© {year} Macro AI · Knowledge Without Boundaries</div>
     </footer>
   );
 }

@@ -1,9 +1,9 @@
 {
-  "name": "vyqora-ai",
+  "name": "macro-ai",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "VYQORA AI: Knowledge Without Boundaries. Personalized learning platform built on the StudyMate grounding engine.",
+  "description": "Macro AI: Knowledge Without Boundaries. Personalized learning platform built on the StudyMate grounding engine.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

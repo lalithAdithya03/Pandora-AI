@@ -1,4 +1,4 @@
--- Optional demo content for trying VYQORA AI.
+-- Optional demo content for trying Macro AI.
 -- 1. Create two accounts through the app at /student/register and confirm both emails.
 --    The one you list as v_teacher_email is promoted to teacher below (an admin-assigned role).
 -- 2. Edit the two emails in the DECLARE block, then run this whole file in Supabase → SQL Editor.
@@ -8,8 +8,8 @@
 -- Safe to re-run: it deletes and recreates the demo course.
 do $$
 declare
-  v_teacher_email text := 'teacher@vyqora.test';   -- <-- change me
-  v_student_email text := 'student@vyqora.test';   -- <-- change me
+  v_teacher_email text := 'teacher@macro.test';   -- <-- change me
+  v_student_email text := 'student@macro.test';   -- <-- change me
   v_teacher uuid;
   v_student uuid;
   v_course uuid;
@@ -26,7 +26,7 @@ begin
     raise exception 'Create both accounts in the app first (missing % or %)', v_teacher_email, v_student_email;
   end if;
 
-  update public.profiles set role = 'teacher', institution = coalesce(institution, 'VYQORA Demo Academy') where id = v_teacher;
+  update public.profiles set role = 'teacher', institution = coalesce(institution, 'Macro AI Demo Academy') where id = v_teacher;
 
   delete from public.courses where teacher_id = v_teacher and code in ('ML101', 'PHY110');
 

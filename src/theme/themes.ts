@@ -24,7 +24,7 @@ export const THEMES: ThemeDef[] = [
 ];
 
 export const DEFAULT_THEME: ThemeId = 'midnight-indigo';
-export const STORAGE_KEY = 'vyqora.theme';
+export const STORAGE_KEY = 'macro.theme';
 
 export function isThemeId(v: unknown): v is ThemeId {
   return typeof v === 'string' && THEMES.some((t) => t.id === v);

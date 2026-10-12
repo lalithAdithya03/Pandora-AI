@@ -9,7 +9,7 @@ export default function StudentLogin() {
       title="Welcome back, learner"
       subtitle="Sign in to continue your courses, quizzes and AI tutor sessions."
       footer={<>
-        New to VYQORA AI? <Link to="/student/register" className="link">Create a student account</Link>
+        New to Macro AI? <Link to="/student/register" className="link">Create a student account</Link>
         <p className="mt-2">Are you a teacher? <Link to="/teacher/login" className="link">Teacher login</Link></p>
       </>}
     >

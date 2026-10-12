@@ -1,4 +1,4 @@
--- VYQORA AI core schema.
+-- Macro AI core schema.
 -- Roles live in public.profiles.role and are only ever set by trusted database code
 -- (signup trigger, invitation redemption, admins). The client cannot choose its role.
 

@@ -33,9 +33,9 @@ export function validateName(name: string): string | null {
   return null;
 }
 
-export const INVITE_CODE_RE = /^VYQ-[0-9A-F]{24}$/;
+export const INVITE_CODE_RE = /^MAC-[0-9A-F]{24}$/;
 export function validateInviteCode(code: string): string | null {
   if (!code.trim()) return 'Enter the invitation code from your institution.';
-  if (!INVITE_CODE_RE.test(code.trim().toUpperCase())) return 'Invitation codes look like VYQ- followed by 24 letters and numbers.';
+  if (!INVITE_CODE_RE.test(code.trim().toUpperCase())) return 'Invitation codes look like MAC- followed by 24 letters and numbers.';
   return null;
 }

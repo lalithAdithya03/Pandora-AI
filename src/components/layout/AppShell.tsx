@@ -26,7 +26,7 @@ const TEACHER_NAV: NavItem[] = [
   { to: '/search', label: 'Search', icon: Search },
 ];
 
-const COLLAPSE_KEY = 'vyqora.sidebar.collapsed';
+const COLLAPSE_KEY = 'macro.sidebar.collapsed';
 
 function initials(name: string) {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]!.toUpperCase()).join('') || '?';

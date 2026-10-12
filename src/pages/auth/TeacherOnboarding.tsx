@@ -92,13 +92,13 @@ export default function TeacherOnboarding() {
     >
       <form onSubmit={submit} noValidate className="space-y-4">
         <Alert tone="info">
-          No code yet? Ask your VYQORA administrator to invite your email address. If you already have a student account,
+          No code yet? Ask your Macro AI administrator to invite your email address. If you already have a student account,
           sign in and redeem the code under <strong>Settings → Teacher access</strong>.
         </Alert>
         {error && <Alert tone="error">{error}</Alert>}
         <Field label="Full name" autoComplete="name" icon={<User className="h-4 w-4" />} value={form.name} onChange={set('name')} error={show('name')} />
         <Field label="Invited email address" type="email" autoComplete="email" icon={<Mail className="h-4 w-4" />} value={form.email} onChange={set('email')} error={show('email')} />
-        <Field label="Invitation code" autoComplete="one-time-code" icon={<KeyRound className="h-4 w-4" />} placeholder="VYQ-XXXXXXXXXXXXXXXXXXXXXXXX"
+        <Field label="Invitation code" autoComplete="one-time-code" icon={<KeyRound className="h-4 w-4" />} placeholder="MAC-XXXXXXXXXXXXXXXXXXXXXXXX"
           value={form.code} onChange={set('code')} error={show('code')} className="font-mono uppercase" />
         <div>
           <PasswordField label="Password" autoComplete="new-password" value={form.password} onChange={set('password')} error={show('password')} />

@@ -1,4 +1,4 @@
-# VYQORA AI · Knowledge Without Boundaries
+# Macro AI · Knowledge Without Boundaries
 
 A personalised learning web app: students search their course material, ask an AI tutor that cites the exact page, slide or timestamp, and practise with adaptive quizzes; teachers upload and organise material, build quizzes and follow class progress.
 
@@ -26,7 +26,7 @@ Without a `.env.local` the public pages still render and protected pages show a 
 
 Create them once your database is set up:
 
-1. Register `student@vyqora.test` at `/student/register`, and `teacher@vyqora.test` the same way (it starts as a student).
+1. Register `student@macro.test` at `/student/register`, and `teacher@macro.test` the same way (it starts as a student).
 2. In the Supabase SQL editor, run [`supabase/demo/demo_content.sql`](supabase/demo/demo_content.sql). It promotes the teacher, creates two courses with topics, materials, a quiz and an 18-question bank, and enrols the student. Change the two emails at the top to use your own accounts.
 3. Make yourself an administrator: `update public.profiles set role = 'admin' where email = 'you@example.com';`. Admins invite teachers from `/admin`.
 

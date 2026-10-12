@@ -50,7 +50,7 @@ test.describe('landing and search', () => {
 test.describe('learning features', () => {
   test('adaptive quiz is graded on the server and updates mastery', async ({ page }) => {
     await login(page, 'student');
-    const before = +sql(`select count(*) from quiz_attempts a join profiles p on p.id = a.student_id where p.email = 'student@vyqora.test' and a.submitted_at is not null`);
+    const before = +sql(`select count(*) from quiz_attempts a join profiles p on p.id = a.student_id where p.email = 'student@macro.test' and a.submitted_at is not null`);
     await page.goto('/student/quizzes');
     await page.locator('#qn').selectOption('5');
     await page.getByTestId('start-adaptive').click();
@@ -67,9 +67,9 @@ test.describe('learning features', () => {
     await page.getByTestId('submit-quiz').click();
     await expect(page.getByTestId('quiz-results')).toBeVisible();
     await expect(page.getByTestId('quiz-results')).toContainText(/\d+\s*\/\s*5|%/);
-    const after = +sql(`select count(*) from quiz_attempts a join profiles p on p.id = a.student_id where p.email = 'student@vyqora.test' and a.submitted_at is not null`);
+    const after = +sql(`select count(*) from quiz_attempts a join profiles p on p.id = a.student_id where p.email = 'student@macro.test' and a.submitted_at is not null`);
     expect(after).toBe(before + 1);
-    expect(+sql(`select count(*) from topic_mastery m join profiles p on p.id = m.student_id where p.email = 'student@vyqora.test'`)).toBeGreaterThan(0);
+    expect(+sql(`select count(*) from topic_mastery m join profiles p on p.id = m.student_id where p.email = 'student@macro.test'`)).toBeGreaterThan(0);
   });
 
   test('teacher quiz can be taken from the quizzes page', async ({ page }) => {

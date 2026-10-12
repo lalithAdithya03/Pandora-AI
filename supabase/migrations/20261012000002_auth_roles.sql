@@ -122,7 +122,7 @@ begin
   if p_email !~* '^[^@\s]+@[^@\s]+\.[^@\s]+$' then
     raise exception 'Invalid email address';
   end if;
-  v_code := 'VYQ-' || upper(encode(extensions.gen_random_bytes(12), 'hex'));
+  v_code := 'MAC-' || upper(encode(extensions.gen_random_bytes(12), 'hex'));
   insert into public.teacher_invitations (email, institution, code_hash, invited_by, expires_at)
   values (lower(trim(p_email)), p_institution, encode(extensions.digest(v_code, 'sha256'), 'hex'), auth.uid(),
           now() + make_interval(days => greatest(1, least(p_valid_days, 90))));

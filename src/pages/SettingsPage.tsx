@@ -84,7 +84,7 @@ export default function SettingsPage() {
         <SectionCard title="Teacher access" icon={<ShieldCheck className="h-4 w-4 text-accent" />}>
           <p className="mb-3 text-sm text-muted">If your institution invited this email address as a teacher, enter the invitation code to upgrade this account.</p>
           <form onSubmit={redeem} className="space-y-3">
-            <Field label="Invitation code" value={code} onChange={(e) => setCode(e.target.value)} className="font-mono uppercase" placeholder="VYQ-…" />
+            <Field label="Invitation code" value={code} onChange={(e) => setCode(e.target.value)} className="font-mono uppercase" placeholder="MAC-…" />
             {codeMsg && <Alert tone={codeMsg.tone}>{codeMsg.text}</Alert>}
             <button className="btn-secondary">Redeem invitation</button>
           </form>

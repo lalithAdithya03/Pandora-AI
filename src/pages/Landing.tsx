@@ -14,7 +14,7 @@ const FEATURES = [
 
 const STEPS = [
   { icon: UserCheck, title: 'Join', text: 'Students sign up and enrol in courses. Teachers join through an institution invitation.' },
-  { icon: Upload, title: 'Upload', text: 'Teachers add textbooks, PDFs, slides and notes. VYQORA indexes them with page and slide locations.' },
+  { icon: Upload, title: 'Upload', text: 'Teachers add textbooks, PDFs, slides and notes. Macro AI indexes them with page and slide locations.' },
   { icon: Bot, title: 'Learn', text: 'Students search, ask the AI tutor and follow citations back to the source.' },
   { icon: GraduationCap, title: 'Master', text: 'Adaptive quizzes update topic mastery and point to the material that needs revision.' },
 ];
@@ -27,7 +27,7 @@ export default function Landing() {
           <div className="animate-fade-up">
             <span className="chip border-accent/40 text-accent"><ShieldCheck className="h-3.5 w-3.5" /> Source-grounded personalised learning</span>
             <h1 className="mt-5 text-4xl font-extrabold leading-[1.08] sm:text-5xl lg:text-6xl">
-              VYQORA <span className="text-gradient">AI</span>
+              Macro <span className="text-gradient">AI</span>
               <span className="mt-3 block text-2xl font-bold text-muted sm:text-3xl">Knowledge Without Boundaries.</span>
             </h1>
             <p className="mt-5 max-w-xl text-base text-muted sm:text-lg">

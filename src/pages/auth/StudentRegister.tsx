@@ -89,7 +89,7 @@ export default function StudentRegister() {
         <PasswordField label="Confirm password" autoComplete="new-password" value={form.confirm} onChange={set('confirm')} error={show('confirm')} />
         <label className="flex items-start gap-2 text-sm">
           <input type="checkbox" className="mt-1 h-4 w-4 accent-[rgb(var(--primary))]" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
-          <span>I agree to use VYQORA AI responsibly and to the processing of my learning data to personalise my studies.</span>
+          <span>I agree to use Macro AI responsibly and to the processing of my learning data to personalise my studies.</span>
         </label>
         {show('agree') && <p className="-mt-2 text-xs font-medium text-danger">{show('agree')}</p>}
         <button type="submit" className="btn-primary w-full py-3" disabled={submitting}>

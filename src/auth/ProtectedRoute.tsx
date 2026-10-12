@@ -28,7 +28,7 @@ export function ProtectedRoute({ roles, children }: Props) {
         <div className="card card-pad max-w-md text-center">
           <h1 className="text-xl font-bold">We couldn't load your profile</h1>
           <p className="mt-2 text-sm text-muted">
-            Your account exists but has no VYQORA profile, or the database could not be reached. If you are the
+            Your account exists but has no Macro AI profile, or the database could not be reached. If you are the
             administrator, check that the migrations in supabase/migrations were applied.
           </p>
           <button className="btn-primary mt-5" onClick={() => signOut()}>Sign out</button>

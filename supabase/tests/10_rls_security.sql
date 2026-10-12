@@ -18,18 +18,18 @@ end $$;
 
 -- ---------------------------------------------------------------- signup and roles
 insert into auth.users (email, raw_user_meta_data) values
-  ('admin@vyqora.test', '{"full_name":"Ada Admin"}'),
-  ('teacher@vyqora.test', '{"full_name":"Tara Teacher"}'),
-  ('student@vyqora.test', '{"full_name":"Sam Student"}'),
-  ('other.student@vyqora.test', '{"full_name":"Olu Other"}'),
-  ('sneaky@vyqora.test', '{"full_name":"Sneaky","role":"teacher"}');
-update public.profiles set role = 'admin' where email = 'admin@vyqora.test';   -- bootstrap admin (SQL editor)
+  ('admin@macro.test', '{"full_name":"Ada Admin"}'),
+  ('teacher@macro.test', '{"full_name":"Tara Teacher"}'),
+  ('student@macro.test', '{"full_name":"Sam Student"}'),
+  ('other.student@macro.test', '{"full_name":"Olu Other"}'),
+  ('sneaky@macro.test', '{"full_name":"Sneaky","role":"teacher"}');
+update public.profiles set role = 'admin' where email = 'admin@macro.test';   -- bootstrap admin (SQL editor)
 
-select pg_temp.expect((select role from public.profiles where email = 'sneaky@vyqora.test') = 'student',
+select pg_temp.expect((select role from public.profiles where email = 'sneaky@macro.test') = 'student',
   'signup metadata {"role":"teacher"} is ignored: account is a student');
 
 do $$ begin
-  insert into auth.users (email, raw_user_meta_data) values ('fake@vyqora.test', '{"invite_code":"VYQ-NOTREAL"}');
+  insert into auth.users (email, raw_user_meta_data) values ('fake@macro.test', '{"invite_code":"MAC-NOTREAL"}');
   raise exception 'FAILED: signup with a bogus invite code must be rejected';
 exception when raise_exception then
   if sqlerrm like 'FAILED%' then raise; end if;
@@ -37,24 +37,24 @@ exception when raise_exception then
 end $$;
 
 -- Admin issues an invite; the code works only once and only for the invited email.
-select pg_temp.login('admin@vyqora.test');
+select pg_temp.login('admin@macro.test');
 set role authenticated;
-create temp table invite as select public.create_teacher_invite('new.teacher@vyqora.test', 'North High') as code;
+create temp table invite as select public.create_teacher_invite('new.teacher@macro.test', 'North High') as code;
 reset role;
-select pg_temp.expect(public.check_teacher_invite('new.teacher@vyqora.test', (select code from invite)), 'invite code validates for the invited email');
-select pg_temp.expect(not public.check_teacher_invite('someone.else@vyqora.test', (select code from invite)), 'invite code does not validate for another email');
+select pg_temp.expect(public.check_teacher_invite('new.teacher@macro.test', (select code from invite)), 'invite code validates for the invited email');
+select pg_temp.expect(not public.check_teacher_invite('someone.else@macro.test', (select code from invite)), 'invite code does not validate for another email');
 select pg_temp.expect((select count(*) from public.teacher_invitations where code_hash = (select code from invite)) = 0, 'raw invite code is not stored');
 insert into auth.users (email, raw_user_meta_data)
-  select 'new.teacher@vyqora.test', jsonb_build_object('full_name', 'Nia New', 'invite_code', code) from invite;
-select pg_temp.expect((select role from public.profiles where email = 'new.teacher@vyqora.test') = 'teacher', 'valid invite creates a teacher account');
-select pg_temp.expect((select institution from public.profiles where email = 'new.teacher@vyqora.test') = 'North High', 'invite institution copied to profile');
-select pg_temp.expect(not public.check_teacher_invite('new.teacher@vyqora.test', (select code from invite)), 'invite code cannot be reused');
+  select 'new.teacher@macro.test', jsonb_build_object('full_name', 'Nia New', 'invite_code', code) from invite;
+select pg_temp.expect((select role from public.profiles where email = 'new.teacher@macro.test') = 'teacher', 'valid invite creates a teacher account');
+select pg_temp.expect((select institution from public.profiles where email = 'new.teacher@macro.test') = 'North High', 'invite institution copied to profile');
+select pg_temp.expect(not public.check_teacher_invite('new.teacher@macro.test', (select code from invite)), 'invite code cannot be reused');
 
 -- Students cannot create invites or change roles.
-select pg_temp.login('student@vyqora.test');
+select pg_temp.login('student@macro.test');
 set role authenticated;
 do $$ begin
-  perform public.create_teacher_invite('me@vyqora.test');
+  perform public.create_teacher_invite('me@macro.test');
   raise exception 'FAILED: student created an invite';
 exception when insufficient_privilege then raise notice 'ok  student cannot create teacher invitations';
 end $$;
@@ -84,7 +84,7 @@ reset role;
 
 -- Unpublished draft course owned by the teacher.
 insert into public.courses (teacher_id, title, code, subject, is_published)
-select id, 'Draft: Advanced Optimisation', 'ML201', 'Computer Science', false from public.profiles where email = 'teacher@vyqora.test';
+select id, 'Draft: Advanced Optimisation', 'ML201', 'Computer Science', false from public.profiles where email = 'teacher@macro.test';
 create temp table ids as select (select id from public.courses where code = 'ML201') as ml201,
                                 (select id from public.courses where code = 'ML101') as ml101;
 grant select on ids to authenticated;
@@ -106,7 +106,7 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------- enrolled student
-select pg_temp.login('student@vyqora.test');
+select pg_temp.login('student@macro.test');
 set role authenticated;
 select pg_temp.expect((select count(*) from public.courses) = 2, 'student sees published courses but not drafts');
 select pg_temp.expect((select count(*) from public.resources) = 3, 'student sees the 3 resources of their enrolled course only');
@@ -178,7 +178,7 @@ select pg_temp.expect(not exists (
 reset role;
 
 -- Another student cannot see or submit the first student's attempt.
-select pg_temp.login('other.student@vyqora.test');
+select pg_temp.login('other.student@macro.test');
 set role authenticated;
 select pg_temp.expect((select count(*) from public.quiz_attempts) = 0, 'students cannot see each other''s attempts');
 select pg_temp.expect((select count(*) from public.topic_mastery) = 0, 'students cannot see each other''s mastery');
@@ -193,7 +193,7 @@ select pg_temp.expect((select count(*) from public.resources) = 1, 'after self-e
 reset role;
 
 -- ---------------------------------------------------------------- teachers
-select pg_temp.login('teacher@vyqora.test');
+select pg_temp.login('teacher@macro.test');
 set role authenticated;
 select pg_temp.expect((select count(*) from public.courses) = 3, 'teacher sees their courses including drafts');
 select pg_temp.expect((select count(*) from public.question_keys) = 18, 'teacher reads answer keys of their own questions');
@@ -206,7 +206,7 @@ insert into storage.objects (bucket_id, name)
 update public.resources set storage_path = (select name from storage.objects limit 1) where title = 'Textbook: ML Basics';
 reset role;
 
-select pg_temp.login('new.teacher@vyqora.test');
+select pg_temp.login('new.teacher@macro.test');
 set role authenticated;
 select pg_temp.expect((select count(*) from public.courses) = 2, 'another teacher sees only the published catalogue');
 select pg_temp.expect((select count(*) from public.resources) = 0, 'another teacher cannot read someone else''s resources');
@@ -230,7 +230,7 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------- storage reads
-select pg_temp.login('student@vyqora.test');
+select pg_temp.login('student@macro.test');
 set role authenticated;
 select pg_temp.expect((select count(*) from storage.objects) = 1, 'enrolled student can read the file of a published resource');
 do $$ begin
@@ -239,17 +239,17 @@ do $$ begin
 exception when insufficient_privilege then raise notice 'ok  students cannot upload course materials';
 end $$;
 reset role;
-select pg_temp.login('other.student@vyqora.test');
+select pg_temp.login('other.student@macro.test');
 set role authenticated;
 select pg_temp.expect((select count(*) from storage.objects) = 0, 'non-enrolled student cannot read course files');
 reset role;
 
 -- An existing student redeems an invitation sent to their own email.
-select pg_temp.login('admin@vyqora.test');
+select pg_temp.login('admin@macro.test');
 set role authenticated;
-create temp table invite2 as select public.create_teacher_invite('other.student@vyqora.test') as code;
+create temp table invite2 as select public.create_teacher_invite('other.student@macro.test') as code;
 reset role;
-select pg_temp.login('sneaky@vyqora.test');
+select pg_temp.login('sneaky@macro.test');
 set role authenticated;
 do $$ begin
   perform public.redeem_teacher_invite((select code from invite2));
@@ -259,7 +259,7 @@ exception when raise_exception then
   raise notice 'ok  an invite cannot be redeemed by a different account';
 end $$;
 reset role;
-select pg_temp.login('other.student@vyqora.test');
+select pg_temp.login('other.student@macro.test');
 set role authenticated;
 select pg_temp.expect(public.redeem_teacher_invite((select code from invite2)) = 'teacher', 'existing account upgraded by its own invite');
 reset role;

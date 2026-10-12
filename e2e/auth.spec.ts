@@ -28,7 +28,7 @@ test.describe('authentication and roles', () => {
 
   test('wrong password shows a friendly error', async ({ page }) => {
     await page.goto('/student/login');
-    await page.getByLabel('Email address').fill('student@vyqora.test');
+    await page.getByLabel('Email address').fill('student@macro.test');
     await page.getByLabel('Password', { exact: true }).fill('WrongPass123');
     await page.getByTestId('login-submit').click();
     await expect(page.getByRole('alert')).toContainText(/incorrect|invalid/i);
@@ -37,7 +37,7 @@ test.describe('authentication and roles', () => {
 
   test('a student cannot sign in through the teacher portal', async ({ page }) => {
     await page.goto('/teacher/login');
-    await page.getByLabel('Email address').fill('student@vyqora.test');
+    await page.getByLabel('Email address').fill('student@macro.test');
     await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
     await page.getByTestId('login-submit').click();
     await expect(page.getByRole('alert')).toContainText(/does not have teacher access/i);
@@ -62,7 +62,7 @@ test.describe('authentication and roles', () => {
     await expect(page).toHaveURL(/\/teacher\/login\?next=%2Fteacher%2Fstudents/);
     await page.goto('/student/quizzes');
     await expect(page).toHaveURL(/\/student\/login\?next=%2Fstudent%2Fquizzes/);
-    await page.getByLabel('Email address').fill('student@vyqora.test');
+    await page.getByLabel('Email address').fill('student@macro.test');
     await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
     await page.getByTestId('login-submit').click();
     await expect(page).toHaveURL(/\/student\/quizzes/);
@@ -89,7 +89,7 @@ test.describe('authentication and roles', () => {
     // Admin creates the invitation in the admin console.
     const admin = await browser.newPage();
     await admin.goto('/teacher/login');
-    await admin.getByLabel('Email address').fill('admin@vyqora.test');
+    await admin.getByLabel('Email address').fill('admin@macro.test');
     await admin.getByLabel('Password', { exact: true }).fill(PASSWORD);
     await admin.getByTestId('login-submit').click();
     await expect(admin).toHaveURL(/\/teacher\/dashboard/);
@@ -97,14 +97,14 @@ test.describe('authentication and roles', () => {
     await admin.getByLabel("Teacher's email").fill(email);
     await admin.getByRole('button', { name: 'Create invitation' }).click();
     const code = (await admin.getByTestId('invite-code').innerText()).trim();
-    expect(code).toMatch(/^VYQ-[0-9A-F]{24}$/);
+    expect(code).toMatch(/^MAC-[0-9A-F]{24}$/);
     expect(sql(`select count(*) from teacher_invitations where code_hash = '${code}'`)).toBe('0'); // only the hash is stored
     await admin.close();
 
     await page.goto('/teacher/onboarding');
     await page.getByLabel('Full name').fill('New Teacher');
     await page.getByLabel('Invited email address').fill(email);
-    await page.getByLabel('Invitation code').fill('VYQ-000000000000000000000000');
+    await page.getByLabel('Invitation code').fill('MAC-000000000000000000000000');
     await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
     await page.getByLabel('Confirm password').fill(PASSWORD);
     await page.getByRole('button', { name: /create teacher account/i }).click();

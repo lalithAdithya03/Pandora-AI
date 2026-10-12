@@ -101,7 +101,7 @@ export default function StudentDashboard() {
       {loading ? <SkeletonRows rows={4} /> : data && (
         <>
           {data.enrollments.length === 0 ? (
-            <EmptyState icon={BookOpen} title="Welcome to VYQORA AI! Start by joining a course" action={<Link to="/student/courses" className="btn-primary">Browse courses <ArrowRight className="h-4 w-4" /></Link>}>
+            <EmptyState icon={BookOpen} title="Welcome to Macro AI! Start by joining a course" action={<Link to="/student/courses" className="btn-primary">Browse courses <ArrowRight className="h-4 w-4" /></Link>}>
               Once you enrol, your course materials, AI tutor, quizzes and progress tracking all light up here.
             </EmptyState>
           ) : (

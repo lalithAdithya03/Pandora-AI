@@ -1,4 +1,4 @@
-// VYQORA AI tutor: generates an explanation grounded ONLY in course excerpts the caller may read.
+// Macro AI tutor: generates an explanation grounded ONLY in course excerpts the caller may read.
 // Deploy:  supabase functions deploy tutor
 // Secrets: supabase secrets set ANTHROPIC_API_KEY=... [TUTOR_MODEL=claude-opus-5-5]
 // The API key lives only here, server-side. The browser never sees it.
@@ -19,7 +19,7 @@ const LEVELS: Record<string, string> = {
   advanced: 'Explain precisely and concisely for a strong student; include the underlying reasoning and connections between ideas.',
 };
 
-const SYSTEM = `You are VYQORA AI, a tutor that answers ONLY from the numbered course excerpts provided.
+const SYSTEM = `You are Macro AI, a tutor that answers ONLY from the numbered course excerpts provided.
 Rules:
 - Use only facts stated in the excerpts. Do not add outside knowledge, even if you know it.
 - Cite every claim with the excerpt numbers it comes from, e.g. [1] or [2][3], inline in the answer.
