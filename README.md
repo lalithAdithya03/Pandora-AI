@@ -4,6 +4,44 @@ A personalised learning web app: students search their course material, ask an A
 
 Built with React 18 + Vite + TypeScript + Tailwind, on Supabase (Postgres, Auth, Row Level Security, Storage, Edge Functions). The original StudyMate prototype is kept unchanged at the bottom of this page.
 
+## Architecture
+
+```mermaid
+flowchart LR
+  subgraph Users
+    S[Student]
+    T[Teacher]
+    A[Admin]
+  end
+
+  subgraph Vercel["Vercel (static hosting)"]
+    UI["React 18 + Vite SPA<br/>src/pages, src/components"]
+  end
+
+  subgraph Supabase
+    AUTH["Auth<br/>email + password, reset links"]
+    DB[("Postgres + Row Level Security<br/>courses, topics, resources, chunks,<br/>quizzes, enrolments, mastery")]
+    ST[("Storage<br/>private course-materials bucket")]
+    FN["Edge Function: tutor<br/>holds ANTHROPIC_API_KEY"]
+  end
+
+  CL["Claude API"]
+
+  S & T & A -->|HTTPS| UI
+  UI -->|sign in, session JWT| AUTH
+  UI -->|"supabase-js queries (anon key + JWT)"| DB
+  UI -->|upload, signed URLs| ST
+  UI -->|tutor question + cited passages| FN
+  FN -->|grounded prompt| CL
+  AUTH -->|"profile row and role (trigger)"| DB
+  ST -.->|"access checked by can_read_course_file()"| DB
+```
+
+- The browser only ever holds the public anon key. Every read and write goes through Row Level Security, so roles come from the `profiles` table, never from the client.
+- Teachers upload files to Storage; the app extracts text per page (`src/lib/ingest.ts`) into `resource_chunks`, which feed search and the tutor's citations.
+- The tutor picks matching passages (`src/lib/grounding.ts`) and sends them to the `tutor` Edge Function, which calls Claude with the key kept server-side. Without the key it falls back to demo mode.
+- Quiz grading and mastery updates run inside Postgres functions, so answer keys never reach students.
+
 ## Quick start
 
 ```bash
